@@ -212,9 +212,9 @@ class StaffGradedEssayXBlock(XBlock):
         """
         submission = self.get_submission()
         if submission:
-            uploaded = {"essay": submission['answer']['essay']}
+            answered = {"essay": submission['answer']['essay']}
         else:
-            uploaded = None
+            answered = None
 
         score = self.score
         if score is not None:
@@ -224,7 +224,7 @@ class StaffGradedEssayXBlock(XBlock):
 
         return {
             "display_name": self.display_name,
-            "uploaded": uploaded,
+            "answered": answered,
             "graded": graded,
             "max_score": self.max_score(),
             "upload_allowed": self.upload_allowed(),

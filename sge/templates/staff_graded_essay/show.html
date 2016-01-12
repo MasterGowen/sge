@@ -17,12 +17,12 @@
           <a href="<%= annotatedUrl %>"><%= annotated.filename %></a>
         <% } %>
       </p>
-    <% } else if (uploaded) { %>
+    <% } else if (answered) { %>
       {% trans "This assignment has not yet been graded." %}
     <% } %>
     <% if (upload_allowed) { %>
     <p>
-      <% if (uploaded) { %>
+      <% if (answered) { %>
         {% trans "Upload a different file" %}
       <% } else { %>
         {% trans "Upload your assignment" %}
@@ -48,7 +48,7 @@
         <th class="header">Username <i class="icon fa fa-sort"/></th>
         <th class="header">Name <i class="icon fa fa-sort"/></th>
         <th class="header">Essay <i class="icon fa fa-sort"/></th>
-        <th class="header">Uploaded <i class="icon fa fa-sort"/></th>
+        <th class="header">Answered <i class="icon fa fa-sort"/></th>
         <th class="header">Grade <i class="icon fa fa-sort"/></th>
         <th class="header">Instructor's comments <i class="icon fa fa-sort"/></th>
         <th class="header">Annotated <i class="icon fa fa-sort"/></th>
