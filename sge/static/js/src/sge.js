@@ -1,7 +1,6 @@
 /* Javascript for StaffGradedAssignmentXBlock. */
 function StaffGradedEssayXBlock(runtime, element) {
     function xblock($, _) {
-        var annotatedUrl = runtime.handlerUrl(element, 'download_annotated');
         var getStaffGradingUrl = runtime.handlerUrl(
           element, 'get_staff_grading_data'
         );
@@ -23,6 +22,7 @@ function StaffGradedEssayXBlock(runtime, element) {
 
             // Render template
             var content = $(element).find('#sge-content').html(template(state));
+        }
 
         function renderStaffGrading(data) {
             $('.grade-modal').hide();
@@ -55,21 +55,6 @@ function StaffGradedEssayXBlock(runtime, element) {
             $(element).find('#grade-info .fileupload').each(function() {
                 var row = $(this).parents("tr");
                 var url = staffUploadUrl + "?module_id=" + row.data("module_id");
-                var fileUpload = $(this).fileupload({
-                    url: url,
-                    progressall: function(e, data) {
-                        var percent = parseInt(data.loaded / data.total * 100, 10);
-                        row.find('.upload').text('Uploading... ' + percent + '%');
-                    },
-                    done: function(e, data) {
-                        // Add a time delay so user will notice upload finishing
-                        // for small files
-                        setTimeout(
-                            function() { renderStaffGrading(data.result); },
-                            3000);
-                    }
-                });
-
                 updateChangeEvent(fileUpload);
             });
             $.tablesorter.addParser({
@@ -213,14 +198,12 @@ function StaffGradedEssayXBlock(runtime, element) {
          * jquery.ajaxfileupload instead.  But our XBlock uses
          * jquery.fileupload.
          */
-        loadjs('/static/js/vendor/jQuery-File-Upload/js/jquery.iframe-transport.js');
-        loadjs('/static/js/vendor/jQuery-File-Upload/js/jquery.fileupload.js');
         xblock($, _);
     } else {
         /**
          * Studio, on the other hand, uses require.js and already knows about
          * jquery.fileupload.
          */
-        require(['jquery', 'underscore', 'jquery.fileupload'], xblock);
+        require(['jquery', 'underscore'], xblock);
     }
 }
