@@ -1,17 +1,12 @@
 {% load i18n %}
 
-<div class="sga-block" data-state="{{ student_state }}" data-max-size="{{ max_file_size }}"
+<div class="sge-block" data-state="{{ student_state }}" data-max-size="{{ max_file_size }}"
      data-staff="{{ is_course_staff }}">
-  <script type="text/template" id="sga-tmpl">
+  <script type="text/template" id="sge-tmpl">
     <% if (display_name) { %>
        <b><%= display_name %></b>
     <% } %>
-    <% if (uploaded) { %>
-      <p><b>File uploaded</b> 
-        <a href="<%= downloadUrl %>"><%= uploaded.filename %></a></p>
-    <% } else { %>
-      <p>No file has been uploaded.</p>
-    <% } %>
+    
     <% if (graded) { %>
       <p>Your score is <%= graded.score %> / <%= max_score %><br/>
         <% if (graded.comment) { %>
@@ -33,8 +28,7 @@
         {% trans "Upload your assignment" %}
       <% } %>
       <div class="upload">
-        <input class="fileupload" type="file" name="assignment"/>
-        <button>Select a file</button>
+        <textarea rows="10" cols="45" name="essay"></textarea>
       </div>
     </p>
     <% } %>
@@ -43,17 +37,17 @@
     <% } %>
   </script>
 
-  <div id="sga-content">
+  <div id="sge-content">
   </div>
 
   {% if is_course_staff %}
-  <script type="text/template" id="sga-grading-tmpl">
+  <script type="text/template" id="sge-grading-tmpl">
     <table class="gridtable tablesorter" id="submissions">
       <thead>
       <tr>
         <th class="header">Username <i class="icon fa fa-sort"/></th>
         <th class="header">Name <i class="icon fa fa-sort"/></th>
-        <th class="header">Filename <i class="icon fa fa-sort"/></th>
+        <th class="header">Essay <i class="icon fa fa-sort"/></th>
         <th class="header">Uploaded <i class="icon fa fa-sort"/></th>
         <th class="header">Grade <i class="icon fa fa-sort"/></th>
         <th class="header">Instructor's comments <i class="icon fa fa-sort"/></th>

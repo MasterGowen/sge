@@ -1,20 +1,18 @@
 /* Javascript for StaffGradedAssignmentXBlock. */
 function StaffGradedEssayXBlock(runtime, element) {
     function xblock($, _) {
-        var uploadUrl = runtime.handlerUrl(element, 'upload_assignment');
-        var downloadUrl = runtime.handlerUrl(element, 'download_assignment');
         var annotatedUrl = runtime.handlerUrl(element, 'download_annotated');
         var getStaffGradingUrl = runtime.handlerUrl(
           element, 'get_staff_grading_data'
         );
-        var staffDownloadUrl = runtime.handlerUrl(element, 'staff_download');
+
         var staffAnnotatedUrl = runtime.handlerUrl(
           element, 'staff_download_annotated'
         );
-        var staffUploadUrl = runtime.handlerUrl(element, 'staff_upload_annotated');
+
         var enterGradeUrl = runtime.handlerUrl(element, 'enter_grade');
         var removeGradeUrl = runtime.handlerUrl(element, 'remove_grade');
-        var template = _.template($(element).find("#sga-tmpl").text());
+        var template = _.template($(element).find("#sge-tmpl").text());
         var gradingTemplate;
 
         function render(state) {
@@ -24,91 +22,13 @@ function StaffGradedEssayXBlock(runtime, element) {
             state.error = state.error || false;
 
             // Render template
-            var content = $(element).find('#sga-content').html(template(state));
-
-            // Set up file upload
-            var fileUpload = $(content).find('.fileupload').fileupload({
-                url: uploadUrl,
-                add: function(e, data) {
-                    var do_upload = $(content).find('.upload').html('');
-                    $(content).find('p.error').html('');
-                    $('<button/>')
-                        .text('Upload ' + data.files[0].name)
-                        .appendTo(do_upload)
-                        .click(function() {
-                            do_upload.text('Uploading...');
-                            var block = $(element).find(".sga-block");
-                            var data_max_size = block.attr("data-max-size");
-                            var size = data.files[0].size;
-                            if (!_.isUndefined(size)) {
-                                //if file size is larger max file size define in env(django)
-                                if (size >= data_max_size) {
-                                    state.error = 'The file you are trying to upload is too large.';
-                                    render(state);
-                                    return;
-                                }
-                            }
-                            data.submit();
-                        });
-                },
-                progressall: function(e, data) {
-                    var percent = parseInt(data.loaded / data.total * 100, 10);
-                    $(content).find('.upload').text(
-                        'Uploading... ' + percent + '%');
-                },
-                fail: function(e, data) {
-                    /**
-                     * Nginx and other sanely implemented servers return a
-                     * "413 Request entity too large" status code if an
-                     * upload exceeds its limit.  See the 'done' handler for
-                     * the not sane way that Django handles the same thing.
-                     */
-                    if (data.jqXHR.status === 413) {
-                        /* I guess we have no way of knowing what the limit is
-                         * here, so no good way to inform the user of what the
-                         * limit is.
-                         */
-                        state.error = 'The file you are trying to upload is too large.';
-                    } else {
-                        // Suitably vague
-                        state.error = 'There was an error uploading your file.';
-
-                        // Dump some information to the console to help someone
-                        // debug.
-                        console.log('There was an error with file upload.');
-                        console.log('event: ', e);
-                        console.log('data: ', data);
-                    }
-                    render(state);
-                },
-                done: function(e, data) {
-                    /* When you try to upload a file that exceeds Django's size
-                     * limit for file uploads, Django helpfully returns a 200 OK
-                     * response with a JSON payload of the form:
-                     *
-                     *   {'success': '<error message'}
-                     *
-                     * Thanks Obama!
-                     */
-                    if (data.result.success !== undefined) {
-                        // Actually, this is an error
-                        state.error = data.result.success;
-                        render(state);
-                    } else {
-                        // The happy path, no errors
-                        render(data.result);
-                    }
-                }
-            });
-
-            updateChangeEvent(fileUpload);
-        }
+            var content = $(element).find('#sge-content').html(template(state));
 
         function renderStaffGrading(data) {
             $('.grade-modal').hide();
 
             if (data.display_name !== '') {
-                $('.sga-block .display_name').html(data.display_name);
+                $('.sge-block .display_name').html(data.display_name);
             }
 
             // Add download urls to template context
@@ -229,7 +149,7 @@ function StaffGradedEssayXBlock(runtime, element) {
                  * straightforward to submit a patch to leanModal so that it
                  * would work properly with nested modals.
                  *
-                 * See: https://github.com/mitodl/edx-sga/issues/13
+                 * See: https://github.com/mitodl/edx-sge/issues/13
                  */
                 setTimeout(function() {
                     $('#grade-submissions-button').click();
@@ -256,14 +176,14 @@ function StaffGradedEssayXBlock(runtime, element) {
         }
 
         $(function($) { // onLoad
-            var block = $(element).find('.sga-block');
+            var block = $(element).find('.sge-block');
             var state = block.attr('data-state');
             render(JSON.parse(state));
 
             var is_staff = block.attr('data-staff') == 'True';
             if (is_staff) {
                 gradingTemplate = _.template(
-                    $(element).find('#sga-grading-tmpl').text());
+                    $(element).find('#sge-grading-tmpl').text());
                 block.find('#grade-submissions-button')
                     .leanModal()
                     .on('click', function() {
