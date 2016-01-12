@@ -5,9 +5,7 @@ function StaffGradedEssayXBlock(runtime, element) {
           element, 'get_staff_grading_data'
         );
 
-        var staffAnnotatedUrl = runtime.handlerUrl(
-          element, 'staff_download_annotated'
-        );
+
 
         var enterGradeUrl = runtime.handlerUrl(element, 'enter_grade');
         var removeGradeUrl = runtime.handlerUrl(element, 'remove_grade');
@@ -16,7 +14,6 @@ function StaffGradedEssayXBlock(runtime, element) {
 
         function render(state) {
             // Add download urls to template context
-            state.annotatedUrl = annotatedUrl;
             state.error = state.error || false;
 
             // Render template
@@ -29,9 +26,6 @@ function StaffGradedEssayXBlock(runtime, element) {
             if (data.display_name !== '') {
                 $('.sge-block .display_name').html(data.display_name);
             }
-
-            // Add download urls to template context
-            data.annotatedUrl = staffAnnotatedUrl;
 
             // Render template
             $(element).find('#grade-info')

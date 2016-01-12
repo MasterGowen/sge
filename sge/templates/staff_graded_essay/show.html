@@ -12,10 +12,6 @@
         <% if (graded.comment) { %>
           <b>Instructor comment</b> <%= graded.comment %>
         <% } %>
-        <% if (annotated) { %><br/>
-          <b>Annotated file from instructor</b>
-          <a href="<%= annotatedUrl %>"><%= annotated.filename %></a>
-        <% } %>
       </p>
     <% } else if (answered) { %>
       {% trans "This assignment has not yet been graded." %}
@@ -76,11 +72,6 @@
           </td>
           <td><%= assignment.comment %></td>
           <td>
-            <% if (assignment.annotated) { %>
-              <a href="<%= annotatedUrl %>?module_id=<%= assignment.module_id %>">
-                <%= assignment.annotated %>
-              </a>
-            <% } %>
           </td>
           <td>
             <% if (assignment.may_grade) { %>
