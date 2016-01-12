@@ -16,7 +16,6 @@ function StaffGradedEssayXBlock(runtime, element) {
 
         function render(state) {
             // Add download urls to template context
-            state.downloadUrl = downloadUrl;
             state.annotatedUrl = annotatedUrl;
             state.error = state.error || false;
 
@@ -32,7 +31,6 @@ function StaffGradedEssayXBlock(runtime, element) {
             }
 
             // Add download urls to template context
-            data.downloadUrl = staffDownloadUrl;
             data.annotatedUrl = staffAnnotatedUrl;
 
             // Render template

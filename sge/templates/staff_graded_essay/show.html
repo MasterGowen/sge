@@ -62,11 +62,7 @@
           <td><%= assignment.username %></td>
           <td><%= assignment.fullname %></td>
           <td>
-            <% if (assignment.filename) { %>
-              <a href="<%= downloadUrl %>?student_id=<%= assignment.student_id %>">
-                <%= assignment.filename %>
-              </a>
-            <% } %>
+
           </td>
           <td><%= assignment.timestamp %></td>
           <td>
