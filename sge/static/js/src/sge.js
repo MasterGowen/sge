@@ -178,6 +178,7 @@ function StaffGradedEssayXBlock(runtime, element) {
         $(function($) { // onLoad
             var block = $(element).find('.sge-block');
             var state = block.attr('data-state');
+            console.log(state);
             render(JSON.parse(state));
 
             var is_staff = block.attr('data-staff') == 'True';
