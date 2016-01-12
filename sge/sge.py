@@ -1,5 +1,5 @@
 """
-This block defines a Staff Graded Assignment.  Students are shown a rubric
+This block defines a Staff Graded Essay.  Students are shown a rubric
 and invited to upload a file which is then graded by staff.
 """
 import datetime
@@ -57,7 +57,7 @@ def reify(meth):
 
 class StaffGradedEssayXBlock(XBlock):
     """
-    This block defines a Staff Graded Assignment.  Students are shown a rubric
+    This block defines a Staff Graded Essay.  Students are shown a rubric
     and invited to upload a file which is then graded by staff.
     """
     has_score = True
@@ -65,7 +65,7 @@ class StaffGradedEssayXBlock(XBlock):
     STUDENT_FILEUPLOAD_MAX_SIZE = 4 * 1000 * 1000  # 4 MB
 
     display_name = String(
-        default='Staff Graded Assignment', scope=Scope.settings,
+        default='Staff Graded Essay', scope=Scope.settings,
         help="This name appears in the horizontal navigation at the top of "
              "the page."
     )
@@ -209,7 +209,7 @@ class StaffGradedEssayXBlock(XBlock):
         fragment = Fragment()
         fragment.add_content(
             render_template(
-                'templates/staff_graded_assignment/show.html',
+                'templates/staff_graded_essay/show.html',
                 context
             )
         )
