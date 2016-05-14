@@ -63,6 +63,7 @@ class StaffGradedEssayXBlock(XBlock):
     """
     has_score = True
     icon_class = 'problem'
+    STUDENT_FILEUPLOAD_MAX_SIZE = 16 * 1000 * 1000
 
     display_name = String(
         default='Staff Graded Essay', scope=Scope.settings,
