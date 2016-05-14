@@ -218,6 +218,8 @@ class StaffGradedEssayXBlock(XBlock):
         fragment.add_css(_resource("static/css/sge.css"))
         fragment.add_javascript(_resource("static/js/src/sge.js"))
         fragment.add_javascript(_resource("static/js/src/jquery.tablesorter.min.js"))
+        fragment.add_javascript(_resource("static/js/src/jquery.fileupload.js"))
+        fragment.add_javascript(_resource("static/js/src/jquery.iframe-transport.js"))
         fragment.initialize_js('StaffGradedEssayXBlock')
         return fragment
 
