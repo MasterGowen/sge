@@ -326,6 +326,7 @@ class StaffGradedEssayXBlock(XBlock):
                     'username': module.student.username,
                     'fullname': module.student.profile.name,
                     'essay': submission['answer']["essay"],
+                    'filename': submission['answer']["filename"],
                     'timestamp': submission['created_at'].strftime(
                         DateTime.DATETIME_FORMAT
                     ),

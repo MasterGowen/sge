@@ -70,7 +70,7 @@ function StaffGradedEssayXBlock(runtime, element) {
                          * here, so no good way to inform the user of what the
                          * limit is.
                          */
-                        state.error = 'TФайл слишком большой.';
+                        state.error = 'Файл слишком большой.';
                     } else {
                         // Suitably vague
                         state.error = 'Произошла ошибка, попробуйте ответить позже';
