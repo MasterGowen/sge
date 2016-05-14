@@ -289,14 +289,14 @@ function StaffGradedEssayXBlock(runtime, element) {
          * jquery.ajaxfileupload instead.  But our XBlock uses
          * jquery.fileupload.
          */
-        loadjs('/static/js/src/jquery.iframe-transport.js');
-        loadjs('/static/js/src/jquery.fileupload.js');
+        loadjs("/static/js/vendor/jQuery-File-Upload/js/jquery.iframe-transport.js");
+        loadjs("/static/js/vendor/jQuery-File-Upload/js/jquery.fileupload.js");
         xblock($, _);
     } else {
         /**
          * Studio, on the other hand, uses require.js and already knows about
          * jquery.fileupload.
          */
-        require(['jquery', 'underscore', 'jquery.fileupload'], xblock);
+        require(["jquery", "underscore", "jquery.fileupload"], xblock);
     }
 }
