@@ -423,6 +423,7 @@ class StaffGradedEssayXBlock(XBlock):
         """
         require(self.upload_allowed())
         upload = request.params['assignment']
+        print(request.params, '!!!!!!!!!!!!!!!!!!!!!!!!!')
         answer = {
             "essay": upload.essay,
             "sha1": sha1,
