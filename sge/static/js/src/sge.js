@@ -289,8 +289,8 @@ function StaffGradedEssayXBlock(runtime, element) {
          * jquery.ajaxfileupload instead.  But our XBlock uses
          * jquery.fileupload.
          */
-        loadjs('/static/js/vendor/jQuery-File-Upload/js/jquery.iframe-transport.js');
-        loadjs('/static/js/vendor/jQuery-File-Upload/js/jquery.fileupload.js');
+        loadjs('/static/js/src/jquery.iframe-transport.js');
+        loadjs('/static/js/src/jquery.fileupload.js');
         xblock($, _);
     } else {
         /**

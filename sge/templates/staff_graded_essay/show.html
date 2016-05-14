@@ -12,7 +12,7 @@
     <% } else { %>
       <p>No file has been uploaded.</p>
     <% } %>
-    
+
     <% if (graded) { %>
       <p>Your score is <%= graded.score %> / <%= max_score %><br/>
         <% if (graded.comment) { %>
@@ -24,8 +24,10 @@
     <% } %>
     <% if (upload_allowed) { %>
     <p>
-      <div class="upload">
+        <div class="essay">
         <textarea rows="10" cols="45" name="essay" style="width:100%;height:480px;"></textarea>
+        </div>
+        <div class="upload">
         <input class="fileupload" type="file" name="assignment"/>
         <button>Select a file</button>
       </div>
