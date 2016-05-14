@@ -10,13 +10,13 @@
       <p><b>File uploaded</b> 
         <a href="<%= downloadUrl %>"><%= uploaded.filename %></a></p>
     <% } else { %>
-      <p>No file has been uploaded.</p>
+      <p>Файл не загружен.</p>
     <% } %>
 
     <% if (graded) { %>
-      <p>Your score is <%= graded.score %> / <%= max_score %><br/>
+      <p>Ваша оценка: <%= graded.score %> / <%= max_score %><br/>
         <% if (graded.comment) { %>
-          <b>Instructor comment</b> <%= graded.comment %>
+          <b>Комментарий учителя:</b> <%= graded.comment %>
         <% } %>
       </p>
     <% } else if (answered) { %>

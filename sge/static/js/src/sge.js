@@ -35,17 +35,17 @@ function StaffGradedEssayXBlock(runtime, element) {
                     var do_upload = $(content).find('.upload').html('');
                     $(content).find('p.error').html('');
                     $('<button/>')
-                        .text('Upload ' + data.files[0].name)
+                        .text('Отправить ' + data.files[0].name + ' и ответ')
                         .appendTo(do_upload)
                         .click(function() {
-                            do_upload.text('Uploading...');
+                            do_upload.text('Загрузка...');
                             var block = $(element).find(".sge-block");
                             var data_max_size = block.attr("data-max-size");
                             var size = data.files[0].size;
                             if (!_.isUndefined(size)) {
                                 //if file size is larger max file size define in env(django)
                                 if (size >= data_max_size) {
-                                    state.error = 'The file you are trying to upload is too large.';
+                                    state.error = 'Файл слишком большой.';
                                     render(state);
                                     return;
                                 }
@@ -56,7 +56,7 @@ function StaffGradedEssayXBlock(runtime, element) {
                 progressall: function(e, data) {
                     var percent = parseInt(data.loaded / data.total * 100, 10);
                     $(content).find('.upload').text(
-                        'Uploading... ' + percent + '%');
+                        'Загрузка... ' + percent + '%');
                 },
                 fail: function(e, data) {
                     /**
@@ -70,10 +70,10 @@ function StaffGradedEssayXBlock(runtime, element) {
                          * here, so no good way to inform the user of what the
                          * limit is.
                          */
-                        state.error = 'The file you are trying to upload is too large.';
+                        state.error = 'TФайл слишком большой.';
                     } else {
                         // Suitably vague
-                        state.error = 'There was an error uploading your file.';
+                        state.error = 'Произошла ошибка, попробуйте ответить позже';
                         // Dump some information to the console to help someone
                         // debug.
                         console.log('There was an error with file upload.');
