@@ -203,6 +203,10 @@ class StaffGradedEssayXBlock(XBlock):
         context = {
             "student_state": json.dumps(self.student_state()),
             "id": self.location.name.replace('.', '_'),
+            "max_file_size": getattr(
+                settings, "STUDENT_FILEUPLOAD_MAX_SIZE",
+                self.STUDENT_FILEUPLOAD_MAX_SIZE
+            )
         }
         if self.show_staff_grading_interface():
             context['is_course_staff'] = True
