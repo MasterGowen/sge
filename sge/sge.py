@@ -20,6 +20,7 @@ from django.core.files import File
 from django.core.files.storage import default_storage
 from django.conf import settings
 from django.template import Context, Template
+from django.utils.encoding import smart_text
 
 from student.models import user_by_anonymous_id
 from submissions import api as submissions_api
@@ -546,7 +547,7 @@ def load_resource(resource_path):  # pragma: NO COVER
     Gets the content of a resource
     """
     resource_content = pkg_resources.resource_string(__name__, resource_path)
-    return unicode(resource_content)
+    return smart_text(resource_content)
 
 
 def render_template(template_path, context=None):  # pragma: NO COVER
