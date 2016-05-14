@@ -425,7 +425,7 @@ class StaffGradedEssayXBlock(XBlock):
         upload = request.params['assignment']
         print(request.params, '!!!!!!!!!!!!!!!!!!!!!!!!!')
         answer = {
-            "essay": upload.essay,
+            #"essay": upload.essay,
             "sha1": sha1,
             "filename": upload.file.name,
             "mimetype": mimetypes.guess_type(upload.file.name)[0],
