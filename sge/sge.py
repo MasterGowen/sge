@@ -110,8 +110,8 @@ class StaffGradedEssayXBlock(XBlock):
         display_name="Annotated SHA1",
         scope=Scope.user_state,
         default=None,
-        help=_("sha1 of the annotated file uploaded by the instructor for "
-               "this assignment.")
+        help="sha1 of the annotated file uploaded by the instructor for "
+               "this assignment."
     )
 
     annotated_filename = String(
