@@ -1,5 +1,5 @@
 function StaffGradedAssignmentXBlock(runtime, element, server) {
-    var saveUrl = runtime.handlerUrl(element, 'save_sga');
+    var saveUrl = runtime.handlerUrl(element, 'save_sge');
 
     var validators = {
         'number': function(x) {

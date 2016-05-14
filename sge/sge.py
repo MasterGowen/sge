@@ -134,7 +134,7 @@ class StaffGradedEssayXBlock(XBlock):
             "student_id": submission_id,
             "course_id": self.course_id,
             "item_id": self.block_id,
-            "item_type": 'sga',  # ???
+            "item_type": 'sge',  # ???
         }
 
     def get_submission(self, submission_id=None):
@@ -337,7 +337,7 @@ class StaffGradedEssayXBlock(XBlock):
             raise
 
     @XBlock.json_handler
-    def save_sga(self, data, suffix=''):
+    def save_sge(self, data, suffix=''):
         # pylint: disable=unused-argument
         """
         Persist block data when updating settings in studio.
