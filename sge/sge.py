@@ -106,6 +106,34 @@ class StaffGradedEssayXBlock(XBlock):
         scope=Scope.user_state,
         help=""
     )
+    annotated_sha1 = String(
+        display_name="Annotated SHA1",
+        scope=Scope.user_state,
+        default=None,
+        help=_("sha1 of the annotated file uploaded by the instructor for "
+               "this assignment.")
+    )
+
+    annotated_filename = String(
+        display_name="Annotated file name",
+        scope=Scope.user_state,
+        default=None,
+        help="The name of the annotated file uploaded for this assignment."
+    )
+
+    annotated_mimetype = String(
+        display_name="Mime type of annotated file",
+        scope=Scope.user_state,
+        default=None,
+        help="The mimetype of the annotated file uploaded for this assignment."
+    )
+
+    annotated_timestamp = DateTime(
+        display_name="Timestamp",
+        scope=Scope.user_state,
+        default=None,
+        help="When the annotated file was uploaded"
+    )
 
     def max_score(self):
         """
@@ -214,8 +242,15 @@ class StaffGradedEssayXBlock(XBlock):
         submission = self.get_submission()
         if submission:
             answered = {"essay": submission['answer']['essay']}
+            uploaded = {"filename": submission['answer']['filename']}
         else:
             answered = None
+            uploaded = None
+
+        if self.annotated_sha1:
+            annotated = {"filename": self.annotated_filename}
+        else:
+            annotated = None
 
         score = self.score
         if score is not None:
@@ -224,6 +259,8 @@ class StaffGradedEssayXBlock(XBlock):
             graded = None
 
         return {
+            "uploaded": uploaded,
+            "annotated": annotated,
             "display_name": self.display_name,
             "answered": answered,
             "graded": graded,
@@ -269,7 +306,7 @@ class StaffGradedEssayXBlock(XBlock):
                     )
 
                 state = json.loads(module.state)
-                score = self.get_score(student.student_id)
+
                 approved = score is not None
                 if score is None:
                     score = state.get('staff_score')
@@ -397,6 +434,16 @@ class StaffGradedEssayXBlock(XBlock):
         upload = request.params['annotated']
         module = StudentModule.objects.get(pk=request.params['module_id'])
         state = json.loads(module.state)
+        state['annotated_sha1'] = sha1 = _get_sha1(upload.file)
+        state['annotated_filename'] = filename = upload.file.name
+        state['annotated_mimetype'] = mimetypes.guess_type(upload.file.name)[0]
+        state['annotated_timestamp'] = _now().strftime(
+            DateTime.DATETIME_FORMAT
+        )
+        path = self._file_storage_path(sha1, filename)
+        if not default_storage.exists(path):
+            default_storage.save(path, File(upload.file))
+        score = self.get_score(student.student_id)
         module.state = json.dumps(state)
         module.save()
         log.info(
@@ -418,18 +465,47 @@ class StaffGradedEssayXBlock(XBlock):
 
     @XBlock.handler
     def download_annotated(self, request, suffix=''):
-        pass
+        path = self._file_storage_path(
+            self.annotated_sha1,
+            self.annotated_filename,
+        )
+        return self.download(
+            path,
+            self.annotated_mimetype,
+            self.annotated_filename
+        )
 
     @XBlock.handler
     def staff_download(self, request, suffix=''):
-        pass
+        require(self.is_course_staff())
+        submission = self.get_submission(request.params['student_id'])
+        answer = submission['answer']
+        path = self._file_storage_path(answer['sha1'], answer['filename'])
+        return self.download(path, answer['mimetype'], answer['filename'])
 
     @XBlock.handler
     def staff_download_annotated(self, request, suffix=''):
-        pass
+        require(self.is_course_staff())
+        module = StudentModule.objects.get(pk=request.params['module_id'])
+        state = json.loads(module.state)
+        path = self._file_storage_path(
+            state['annotated_sha1'],
+            state['annotated_filename']
+        )
+        return self.download(
+            path,
+            state['annotated_mimetype'],
+            state['annotated_filename']
+        )
 
     def download(self, path, mime_type, filename, require_staff=False):
-        pass
+        BLOCK_SIZE = (1 << 10) * 8  # 8kb
+        file = default_storage.open(path)
+        app_iter = iter(partial(file.read, BLOCK_SIZE), '')
+        return Response(
+            app_iter=app_iter,
+            content_type=mimetype,
+            content_disposition="attachment; filename=" + filename)
 
     @XBlock.handler
     def get_staff_grading_data(self, request, suffix=''):
@@ -480,6 +556,10 @@ class StaffGradedEssayXBlock(XBlock):
         state = json.loads(module.state)
         state['staff_score'] = None
         state['comment'] = ''
+        state['annotated_sha1'] = None
+        state['annotated_filename'] = None
+        state['annotated_mimetype'] = None
+        state['annotated_timestamp'] = None
         module.state = json.dumps(state)
         module.save()
         log.info(
@@ -526,6 +606,24 @@ class StaffGradedEssayXBlock(XBlock):
         """
         return not self.past_due() and self.score is None
 
+    def _file_storage_path(self, sha1, filename):
+        path = (
+            '{loc.org}/{loc.course}/{loc.block_type}/{loc.block_id}'
+            '/{sha1}{ext}'.format(
+                loc=self.location,
+                sha1=sha1,
+                ext=os.path.splitext(filename)[1]
+            )
+        )
+        return path
+
+def _get_sha1(file):
+    BLOCK_SIZE = 2**10 * 8  # 8kb
+    sha1 = hashlib.sha1()
+    for block in iter(partial(file.read, BLOCK_SIZE), ''):
+        sha1.update(block)
+    file.seek(0)
+    return sha1.hexdigest()
 
 def _resource(path):  # pragma: NO COVER
     """

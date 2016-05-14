@@ -6,6 +6,12 @@
     <% if (display_name) { %>
        <b><%= display_name %></b>
     <% } %>
+    <% if (uploaded) { %>
+      <p><b>File uploaded</b> 
+        <a href="<%= downloadUrl %>"><%= uploaded.filename %></a></p>
+    <% } else { %>
+      <p>No file has been uploaded.</p>
+    <% } %>
     
     <% if (graded) { %>
       <p>Your score is <%= graded.score %> / <%= max_score %><br/>
@@ -20,6 +26,8 @@
     <p>
       <div class="upload">
         <textarea rows="10" cols="45" name="essay" style="width:100%;height:480px;"></textarea>
+        <input class="fileupload" type="file" name="assignment"/>
+        <button>Select a file</button>
       </div>
     </p>
     <% } %>
@@ -45,6 +53,8 @@
         <th class="header">Name <i class="icon fa fa-sort"/></th>
         <th class="header">Essay <i class="icon fa fa-sort"/></th>
         <th class="header">Answered <i class="icon fa fa-sort"/></th>
+        <th class="header">Filename <i class="icon fa fa-sort"/></th>
+        <th class="header">Uploaded <i class="icon fa fa-sort"/></th>
         <th class="header">Grade <i class="icon fa fa-sort"/></th>
         <th class="header">Instructor's comments <i class="icon fa fa-sort"/></th>
         <th class="header">Annotated <i class="icon fa fa-sort"/></th>
@@ -58,7 +68,11 @@
           <td><%= assignment.username %></td>
           <td><%= assignment.fullname %></td>
           <td>
-
+          <% if (assignment.filename) { %>
+              <a href="<%= downloadUrl %>?student_id=<%= assignment.student_id %>">
+                <%= assignment.filename %>
+              </a>
+            <% } %>
           </td>
           <td><%= assignment.timestamp %></td>
           <td>
@@ -72,6 +86,11 @@
           </td>
           <td><%= assignment.comment %></td>
           <td>
+          <% if (assignment.annotated) { %>
+              <a href="<%= annotatedUrl %>?module_id=<%= assignment.module_id %>">
+                <%= assignment.annotated %>
+              </a>
+            <% } %>
           </td>
           <td>
             <% if (assignment.may_grade) { %>
