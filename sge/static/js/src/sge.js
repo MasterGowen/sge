@@ -34,7 +34,7 @@ function StaffGradedEssayXBlock(runtime, element) {
                 add: function(e, data) {
                     var do_upload = $(content).find('.upload').html('');
                     $(content).find('p.error').html('');
-                    $('<button/>')
+                    $(element).find('button.Check')
                         .text('Отправить ' + data.files[0].name + ' и ответ')
                         .appendTo(do_upload)
                         .click(function() {
