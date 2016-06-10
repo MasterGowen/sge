@@ -36,7 +36,7 @@ function StaffGradedEssayXBlock(runtime, element) {
                     $(content).find('p.error').html('');
                     $(element).find('button.Check')
                         .text('Отправить ' + data.files[0].name + ' и ответ')
-                        .appendTo(do_upload)
+                        //.appendTo(do_upload)
                         .click(function() {
                             do_upload.text('Загрузка...');
                             var block = $(element).find(".sge-block");
